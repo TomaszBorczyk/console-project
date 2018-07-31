@@ -1,0 +1,16 @@
+# Logs
+*.log*
+
+# Npm
+.npm
+.npmrc
+node_modules
+yarn.lock
+
+# idea/webstorm
+.idea/
+*.iml
+.vscode
+
+# project
+dist
