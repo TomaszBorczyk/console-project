@@ -3,10 +3,15 @@
     color: red;
   }
 
+  .terminal-text-inputed {
+    padding-left: 5px;
+  }
+
   .terminal-input {
     position: absolute;
     z-index: -2;
     color: black;
+    opacity: 0;
 
     &:focus {
       outline: none;
@@ -14,9 +19,14 @@
   }
   
   .command-prompt {
-    &.hidden {
-      visibility: hidden;
+    &.blinking {
+      animation: blink-caret 1.0s step-end infinite;
     }
+  }
+
+  @keyframes blink-caret {
+    from, to { visibility: hidden }
+    50% { visibility: initial; }
   }
 }
 
