@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import {InputLine} from './components/inputLine/inputLine';
 
 export interface AppProps {
     name: string;
@@ -22,6 +23,11 @@ export class App extends Component<AppProps, AppState> {
     }
 
     public render(props: AppProps, state: AppState): JSX.Element {
-        return <h1>props: {props.name} state: {state.name}</h1>;
+        return (
+            <div>
+                <h1>props: {props.name} state: {state.name}</h1>
+                <InputLine/>
+            </div>
+        );
     }
 }

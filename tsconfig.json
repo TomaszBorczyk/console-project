@@ -8,7 +8,8 @@
     "removeComments": true,
     "sourceMap": true,
     "jsx": "react",
-    "jsxFactory": "h"
+    "jsxFactory": "h",
+    "experimentalDecorators": true
   },
   "include": [
     "./src/**/*.tsx",

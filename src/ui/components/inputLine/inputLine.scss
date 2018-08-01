@@ -1,0 +1,22 @@
+.input-line {
+  span {
+    color: red;
+  }
+
+  .terminal-input {
+    position: absolute;
+    z-index: -2;
+    color: black;
+
+    &:focus {
+      outline: none;
+    }
+  }
+  
+  .command-prompt {
+    &.hidden {
+      visibility: hidden;
+    }
+  }
+}
+
