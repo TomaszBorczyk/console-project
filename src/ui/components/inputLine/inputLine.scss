@@ -12,7 +12,6 @@
   .terminal-input {
     position: absolute;
     z-index: -2;
-    color: black;
     opacity: 0;
 
     &:focus {
@@ -26,6 +25,10 @@
 
     &.blinking {
       animation: blink-caret 1.0s step-end infinite;
+    }
+
+    &:after {
+      content: '_';
     }
   }
 

@@ -7,6 +7,12 @@ const CARET_BLINK_PAUSE_TIME_MS: number = 300;
 const CARET_LETTER_SIZE_PX: number = 9.6;
 const CARET_OFFSET_LEFT_PX: number = 14;
 
+const ARROW_RIGHT_KEY: string = 'ArrowRight';
+const ARROW_LEFT_KEY: string = 'ArrowLeft';
+const ARROW_UP_KEY: string = 'ArrowUp';
+const ARROW_DOWN_KEY: string = 'ArrowDown';
+const ENTER_KEY: string = 'Enter';
+
 interface InputLineProps {
     terminalText: string;
     caretPosition: number;
@@ -46,7 +52,7 @@ export class InputLine extends Component<InputLineProps, InputLineState> {
                     ref={(element: HTMLInputElement) => this.terminalTextInputed = element}>{props.terminalText}</span>
                 <span
                     className={`command-prompt ${this.state.caretBlinking ? CARET_BLINKING_CLASS : ''}`}
-                    ref={(element: HTMLElement) => this.caret = element}>_</span>
+                    ref={(element: HTMLElement) => this.caret = element}/>
                 <input
                     className='terminal-input'
                     type='text'
@@ -85,28 +91,29 @@ export class InputLine extends Component<InputLineProps, InputLineState> {
 
     @bind()
     private watchKeys(event: KeyboardEvent): void {
-        console.log('keydown');
-        if (event.key === 'Enter') {
+        if (event.key === ENTER_KEY) {
             event.preventDefault();
             this.state.onEnter(this.terminalInput.value);
-            this.setState(Object.assign(this.state, {caretPosition: 0}));
         } else {
             let caretPosition: number = this.props.caretPosition;
             let textLength: number = this.terminalInput.value.length;
 
-            if (event.key === 'ArrowRight') {
-                event.preventDefault();
-                caretPosition += caretPosition < textLength ? 1 : 0;
-            } else if (event.key === 'ArrowLeft') {
-                event.preventDefault();
-                caretPosition -= caretPosition !== 0 ? 1 : 0;
-            } else if (event.key === 'ArrowUp') {
-                event.preventDefault();
-            } else if (event.key === 'ArrowDown') {
-                event.preventDefault();
+            switch (event.key) {
+                case ARROW_RIGHT_KEY:
+                    event.preventDefault();
+                    caretPosition += caretPosition < textLength ? 1 : 0;
+                    break;
+                case ARROW_LEFT_KEY:
+                    event.preventDefault();
+                    caretPosition -= caretPosition !== 0 ? 1 : 0;
+                    break;
+                case ARROW_UP_KEY:
+                case ARROW_DOWN_KEY:
+                    event.preventDefault();
+                    break;
             }
 
-            if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+            if (event.key === ARROW_RIGHT_KEY || event.key === ARROW_LEFT_KEY) {
                 this.pauseCaretBlinking();
                 this.props.onInputChange(this.terminalInput.value, caretPosition);
             }

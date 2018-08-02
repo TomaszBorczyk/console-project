@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import {InputLine} from './components/inputLine/inputLine';
 import {bind} from 'decko';
 import {TerminalItem, TerminalLog} from './components/terminalLog/terminalLog';
+import {TerminalParser, TerminalResponse} from './parsers/terminalParser';
 
 const DEFAULT_TERMINAL_INPUT_VALUE: string = '';
 
@@ -16,6 +17,8 @@ interface AppState {
 }
 
 export class App extends Component<AppProps, AppState> {
+    private terminalParser: TerminalParser;
+
     constructor(props: AppProps) {
         super(props);
         this.state = {
@@ -23,6 +26,7 @@ export class App extends Component<AppProps, AppState> {
             terminalInputValue: DEFAULT_TERMINAL_INPUT_VALUE,
             caretPosition: 0
         };
+        this.terminalParser = new TerminalParser();
     }
 
     public render(props: AppProps, state: AppState): JSX.Element {
@@ -39,17 +43,22 @@ export class App extends Component<AppProps, AppState> {
     }
 
     @bind()
-    private handleEnter(value: string): void {
-        const newHistoryEntry: TerminalItem = {
+    private handleEnter(consoleInputValue: string): void {
+        const terminalResponse: TerminalResponse = this.terminalParser.getResponse(consoleInputValue);
+
+        const userInputItem: TerminalItem = {
             terminalPrefix: '>',
-            text: value
+            text: consoleInputValue
         };
+
+        const terminalItem: TerminalItem = {text: terminalResponse.message};
 
         this.setState(Object.assign(
             this.state,
             {
-                commandHistory: this.state.commandHistory.concat(newHistoryEntry),
-                terminalInputValue: DEFAULT_TERMINAL_INPUT_VALUE
+                commandHistory: this.state.commandHistory.concat([userInputItem, terminalItem]),
+                terminalInputValue: DEFAULT_TERMINAL_INPUT_VALUE,
+                caretPosition: 0
             }
         ));
     }
