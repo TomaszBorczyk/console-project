@@ -1,4 +1,6 @@
 .input-line {
+  position: relative;
+
   span {
     color: red;
   }
@@ -19,6 +21,9 @@
   }
   
   .command-prompt {
+    position: absolute;
+    top: 3px;
+
     &.blinking {
       animation: blink-caret 1.0s step-end infinite;
     }
