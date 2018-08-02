@@ -63,6 +63,7 @@ export class InputLine extends Component<InputLineProps, InputLineState> {
     }
 
     public componentDidUpdate(): void {
+        this.terminalInput.scrollIntoView();
         this.updateRealCaretPosition();
         this.updateVisualCaretPosition();
     }
