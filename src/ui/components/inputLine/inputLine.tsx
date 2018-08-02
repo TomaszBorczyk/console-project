@@ -5,80 +5,111 @@ const TERMINAL_LINE_PREFIX: string = '>';
 const CARET_BLINKING_CLASS: string = 'blinking';
 const CARET_BLINK_PAUSE_TIME_MS: number = 300;
 const CARET_LETTER_SIZE_PX: number = 9.6;
+const CARET_OFFSET_LEFT_PX: number = 14;
 
-interface InputLineState {
+interface InputLineProps {
     terminalText: string;
-    caretBlinking: boolean;
+    onInputChange: (value: string) => void;
+    onEnter: (value: string) => void;
+    // onArrowUp?: () => void;
+    // onArrowDown?: () => void;
 }
 
-export class InputLine extends Component<{}, InputLineState> {
+interface InputLineState {
+    caretBlinking: boolean;
+    onEnter: (value: string) => void;
+    caretPosition: number;
+    // onArrowUp: () => void;
+    // onArrowDown: () => void;
+}
+
+export class InputLine extends Component<InputLineProps, InputLineState> {
     private terminalInput: HTMLInputElement;
     private terminalTextInputed: HTMLElement;
     private caret: HTMLElement;
     private caretTimer: any;
 
-    constructor() {
+    constructor(props: InputLineProps) {
         super();
-        this.state = { terminalText: '', caretBlinking: true};
+        this.state = {
+            onEnter: props.onEnter,
+            caretBlinking: true,
+            caretPosition: 0
+        };
     }
 
-    public render(): JSX.Element {
+    public render(props: InputLineProps, state: InputLineState): JSX.Element {
         return (
             <div className='input-line'>
                 <span>{TERMINAL_LINE_PREFIX}</span>
                 <span
                     className='terminal-text-inputed'
-                    ref={(element: HTMLInputElement) => this.terminalTextInputed = element}>{this.state.terminalText}</span>
+                    ref={(element: HTMLInputElement) => this.terminalTextInputed = element}>{props.terminalText}</span>
                 <span
                     className={`command-prompt ${this.state.caretBlinking ? CARET_BLINKING_CLASS : ''}`}
                     ref={(element: HTMLElement) => this.caret = element}>_</span>
                 <input
                     className='terminal-input'
                     type='text'
-                    value={this.state.terminalText}
+                    value={props.terminalText}
                     ref={(element: HTMLInputElement) => this.terminalInput = element}/>
             </div>
         );
     }
 
+    public componentDidUpdate(): void {
+        this.updateRealCaretPosition();
+        this.updateVisualCaretPosition();
+    }
+
     public componentDidMount(): void {
         this.terminalInput.addEventListener('input', this.onTerminalInputChange);
         this.terminalInput.addEventListener('keydown', this.watchKeys);
-        this.terminalInput.addEventListener('keyup', this.watchCaretPosition);
         document.addEventListener('click', this.clickOutsideInputListener);
         this.focusToTerminal();
+        this.updateRealCaretPosition();
     }
 
     public componentWillUnmount(): void {
         this.terminalInput.removeEventListener('input', this.onTerminalInputChange);
         this.terminalInput.removeEventListener('keydown', this.watchKeys);
-        this.terminalInput.removeEventListener('keyup', this.watchCaretPosition);
         document.removeEventListener('click', this.clickOutsideInputListener);
     }
 
     @bind()
     private onTerminalInputChange(): void {
         const terminalText: string = this.terminalInput.value;
-        const state: InputLineState = Object.assign(this.state, {terminalText});
-        this.setState(state);
+        this.props.onInputChange(terminalText);
         this.pauseCaretBlinking();
     }
 
     @bind()
     private watchKeys(event: KeyboardEvent): void {
+        console.log('keydown');
         if (event.key === 'Enter') {
-           event.preventDefault();
+            event.preventDefault();
+            this.state.onEnter(this.terminalInput.value);
+            this.setState(Object.assign(this.state, {caretPosition: 0}));
         } else {
-            // console.log(this.terminalInput.selectionS)
-        }
-    }
+            let caretPosition: number = this.state.caretPosition;
+            let textLength: number = this.terminalInput.value.length;
 
-    @bind()
-    private watchCaretPosition(): void {
-        // const caretOffset: number = this.terminalTextInputed.getBoundingClientRect().left;
-        const caretOffset: number = 14;
-        const caretPosition: number = caretOffset + this.terminalInput.selectionStart * CARET_LETTER_SIZE_PX;
-        this.caret.style.left = caretPosition.toString();
+            if (event.key === 'Backspace' || event.key === 'ArrowLeft') {
+                caretPosition -= caretPosition !== 0 ? 1 : 0;
+            } else if (event.key === 'ArrowRight') {
+                caretPosition += caretPosition < textLength ? 1 : 0;
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                // caretPosition = 0;
+            } else if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                // caretPosition = textLength;
+            } else {
+                caretPosition += 1;
+            }
+            this.setState(Object.assign(this.state, {caretPosition}));
+        }
+
     }
 
     @bind()
@@ -88,6 +119,15 @@ export class InputLine extends Component<{}, InputLineState> {
 
     private focusToTerminal(): void {
         this.terminalInput.focus();
+    }
+
+    private updateRealCaretPosition(): void {
+        this.terminalInput.setSelectionRange(this.state.caretPosition, this.state.caretPosition);
+    }
+
+    private updateVisualCaretPosition(): void {
+        let caretLeftPx: number = CARET_OFFSET_LEFT_PX + this.state.caretPosition * CARET_LETTER_SIZE_PX;
+        this.caret.style.left = caretLeftPx.toString();
     }
 
     private pauseCaretBlinking(): void {

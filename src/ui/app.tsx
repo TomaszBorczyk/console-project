@@ -1,33 +1,63 @@
 import { h, Component } from 'preact';
 import {InputLine} from './components/inputLine/inputLine';
+import {bind} from 'decko';
+import {TerminalItem, TerminalLog} from './components/terminalLog/terminalLog';
+
+const DEFAULT_TERMINAL_INPUT_VALUE: string = '';
 
 export interface AppProps {
-    name: string;
+    // commandHistory?: Array<string>;
 }
 
 interface AppState {
-    name: string;
+    commandHistory: Array<TerminalItem>;
+    terminalInputValue: string;
 }
 
 export class App extends Component<AppProps, AppState> {
     constructor(props: AppProps) {
         super(props);
-        this.state = { name: props.name };
-    }
-
-    public componentDidMount(): void {
-        setTimeout(() => {
-            let state: AppState = Object.assign({}, this.state, {name: `Preact's componentDidMount worked as expected`});
-            this.setState(state);
-        }, 2000);
+        this.state = {
+            commandHistory: [],
+            terminalInputValue: DEFAULT_TERMINAL_INPUT_VALUE
+        };
     }
 
     public render(props: AppProps, state: AppState): JSX.Element {
         return (
             <div>
-                <h1>props: {props.name} state: {state.name}</h1>
-                <InputLine/>
+                <TerminalLog items={state.commandHistory}/>
+                <InputLine
+                    terminalText={this.state.terminalInputValue}
+                    onEnter={this.handleEnter}
+                    onInputChange={this.handleInputChange}/>
             </div>
         );
+    }
+
+    @bind()
+    private handleEnter(value: string): void {
+        const newHistoryEntry: TerminalItem = {
+            terminalPrefix: '>',
+            text: value
+        };
+
+        this.setState(Object.assign(
+            this.state,
+            {
+                commandHistory: this.state.commandHistory.concat(newHistoryEntry),
+                terminalInputValue: DEFAULT_TERMINAL_INPUT_VALUE
+            }
+        ));
+    }
+
+    @bind()
+    private handleInputChange(value: string): void {
+        this.setState(Object.assign(
+            this.state,
+            {
+                terminalInputValue: value
+            }
+        ));
     }
 }
