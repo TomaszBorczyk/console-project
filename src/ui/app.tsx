@@ -12,6 +12,7 @@ export interface AppProps {
 interface AppState {
     commandHistory: Array<TerminalItem>;
     terminalInputValue: string;
+    caretPosition: number;
 }
 
 export class App extends Component<AppProps, AppState> {
@@ -19,7 +20,8 @@ export class App extends Component<AppProps, AppState> {
         super(props);
         this.state = {
             commandHistory: [],
-            terminalInputValue: DEFAULT_TERMINAL_INPUT_VALUE
+            terminalInputValue: DEFAULT_TERMINAL_INPUT_VALUE,
+            caretPosition: 0
         };
     }
 
@@ -29,6 +31,7 @@ export class App extends Component<AppProps, AppState> {
                 <TerminalLog items={state.commandHistory}/>
                 <InputLine
                     terminalText={this.state.terminalInputValue}
+                    caretPosition={this.state.caretPosition}
                     onEnter={this.handleEnter}
                     onInputChange={this.handleInputChange}/>
             </div>
@@ -52,11 +55,12 @@ export class App extends Component<AppProps, AppState> {
     }
 
     @bind()
-    private handleInputChange(value: string): void {
+    private handleInputChange(terminalText: string, caretPosition: number): void {
         this.setState(Object.assign(
             this.state,
             {
-                terminalInputValue: value
+                terminalInputValue: terminalText,
+                caretPosition: caretPosition
             }
         ));
     }

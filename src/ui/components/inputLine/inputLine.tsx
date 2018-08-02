@@ -9,7 +9,8 @@ const CARET_OFFSET_LEFT_PX: number = 14;
 
 interface InputLineProps {
     terminalText: string;
-    onInputChange: (value: string) => void;
+    caretPosition: number;
+    onInputChange: (terminalText: string, caretPosition: number) => void;
     onEnter: (value: string) => void;
     // onArrowUp?: () => void;
     // onArrowDown?: () => void;
@@ -18,7 +19,6 @@ interface InputLineProps {
 interface InputLineState {
     caretBlinking: boolean;
     onEnter: (value: string) => void;
-    caretPosition: number;
     // onArrowUp: () => void;
     // onArrowDown: () => void;
 }
@@ -34,7 +34,6 @@ export class InputLine extends Component<InputLineProps, InputLineState> {
         this.state = {
             onEnter: props.onEnter,
             caretBlinking: true,
-            caretPosition: 0
         };
     }
 
@@ -79,7 +78,8 @@ export class InputLine extends Component<InputLineProps, InputLineState> {
     @bind()
     private onTerminalInputChange(): void {
         const terminalText: string = this.terminalInput.value;
-        this.props.onInputChange(terminalText);
+        const caretPosition: number = this.terminalInput.selectionStart;
+        this.props.onInputChange(terminalText, caretPosition);
         this.pauseCaretBlinking();
     }
 
@@ -91,23 +91,25 @@ export class InputLine extends Component<InputLineProps, InputLineState> {
             this.state.onEnter(this.terminalInput.value);
             this.setState(Object.assign(this.state, {caretPosition: 0}));
         } else {
-            let caretPosition: number = this.state.caretPosition;
+            let caretPosition: number = this.props.caretPosition;
             let textLength: number = this.terminalInput.value.length;
 
-            if (event.key === 'Backspace' || event.key === 'ArrowLeft') {
-                caretPosition -= caretPosition !== 0 ? 1 : 0;
-            } else if (event.key === 'ArrowRight') {
+            if (event.key === 'ArrowRight') {
+                event.preventDefault();
                 caretPosition += caretPosition < textLength ? 1 : 0;
+            } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                caretPosition -= caretPosition !== 0 ? 1 : 0;
             } else if (event.key === 'ArrowUp') {
                 event.preventDefault();
-                // caretPosition = 0;
             } else if (event.key === 'ArrowDown') {
                 event.preventDefault();
-                // caretPosition = textLength;
-            } else {
-                caretPosition += 1;
             }
-            this.setState(Object.assign(this.state, {caretPosition}));
+
+            if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+                this.pauseCaretBlinking();
+                this.props.onInputChange(this.terminalInput.value, caretPosition);
+            }
         }
 
     }
@@ -122,11 +124,11 @@ export class InputLine extends Component<InputLineProps, InputLineState> {
     }
 
     private updateRealCaretPosition(): void {
-        this.terminalInput.setSelectionRange(this.state.caretPosition, this.state.caretPosition);
+        this.terminalInput.setSelectionRange(this.props.caretPosition, this.props.caretPosition);
     }
 
     private updateVisualCaretPosition(): void {
-        let caretLeftPx: number = CARET_OFFSET_LEFT_PX + this.state.caretPosition * CARET_LETTER_SIZE_PX;
+        let caretLeftPx: number = CARET_OFFSET_LEFT_PX + this.props.caretPosition * CARET_LETTER_SIZE_PX;
         this.caret.style.left = caretLeftPx.toString();
     }
 
