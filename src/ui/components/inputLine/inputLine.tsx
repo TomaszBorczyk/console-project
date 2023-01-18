@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import {h, Component, JSX} from 'preact';
 import {bind} from 'decko';
 
 const TERMINAL_LINE_PREFIX: string = '>';

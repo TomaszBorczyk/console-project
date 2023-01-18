@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import {h, Component, JSX} from 'preact';
 import {InputLine} from './components/inputLine/inputLine';
 import {bind} from 'decko';
 import {TerminalItem, TerminalLog} from './components/terminalLog/terminalLog';

@@ -1,10 +1,9 @@
-const { join } = require('path');
-
 module.exports = {
     entry: "./src/index.tsx",
     output: {
         filename: "./bundle.js",
     },
+    mode: "development",
     devtool: "eval",
     resolve: {
         extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
@@ -22,19 +21,14 @@ module.exports = {
                     {
                         loader: 'postcss-loader',
                         options: {
-                            plugins: [
-                                require('autoprefixer')({
-                                    browsers: ['last 3 version']
-                                })
-                            ]
+                            postcssOptions: {
+                                plugins: [
+                                    require('autoprefixer')
+                                ]
+                            }
                         }
                     }, {
-                        loader: 'sass-loader',
-                        options: {
-                            includePaths: [
-                                join(__dirname, 'src')
-                            ]
-                        }
+                        loader: 'sass-loader'
                     }
                 ]
             }
