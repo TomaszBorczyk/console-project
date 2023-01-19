@@ -6,22 +6,29 @@ export enum Mode {
 }
 
 export interface TerminalResponse {
-    message?: string;
     mode: Mode;
+    command: TerminalCommand;
+    message?: string;
 }
 
 export class TerminalParser implements BaseParser<string, TerminalResponse> {
     public getResponse(command: string): TerminalResponse {
         let terminalCommand: TerminalCommand = interpretCommand(command);
         const mode: Mode = this.getTerminalMode(terminalCommand.command);
-        const message: string = this.getTerminalMessage(terminalCommand.command);
-        return {message, mode};
+        const message: string = this.getTerminalMessage(terminalCommand);
+        return {
+            mode: mode,
+            command: terminalCommand,
+            message: message
+        };
     }
 
-    private getTerminalMessage(value: string): string {
-        switch (value) {
-            case null: return '';
-            default: return `${value}: command not found`;
+    private getTerminalMessage(command: TerminalCommand): string {
+        switch (command.command) {
+            case 'ls': return null;
+            case 'cd': return null;
+            case null: return null;
+            default: return `${command.command}: command not found`;
         }
     }
 

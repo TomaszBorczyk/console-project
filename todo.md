@@ -1,0 +1,8 @@
+- [ ] Up/down for history browsing
+- [ ] clear command
+- [ ] tab autocomplete
+- [ ] history max length configuration (should be a stack/queue)
+- [ ] command configuration - cd, pwd, ls, cat, help, something-special
+- [ ] display interactive window like terminal popup
+- [x] create directory structure and following current dir
+- [ ] create "files" in the system and different behavior for them (text, executables)
