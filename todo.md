@@ -2,7 +2,10 @@
 - [ ] clear command
 - [ ] tab autocomplete
 - [ ] history max length configuration (should be a stack/queue)
-- [ ] command configuration - cd, pwd, ls, cat, help, something-special
-- [ ] display interactive window like terminal popup
+- [x] command configuration - cd, pwd, ls, cat, help, something-special
 - [x] create directory structure and following current dir
+- [ ] allow displaying links
+
+Priorities:
+- [ ] display interactive window like terminal popup
 - [ ] create "files" in the system and different behavior for them (text, executables)

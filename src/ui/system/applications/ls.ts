@@ -7,7 +7,7 @@ export class LS extends BaseApp {
     constructor(private systemNavigator: SystemNavigator) {
         super();
         this._name = 'ls';
-
+        this._description = 'Display directory contents';
     }
 
     public execute(command: TerminalCommand): string {

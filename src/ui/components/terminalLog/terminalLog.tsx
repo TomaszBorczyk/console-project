@@ -22,7 +22,7 @@ export class TerminalLog extends Component<TerminalLogProps, {}> {
         return (
             <div className='terminal-log-item'>
                 {terminalPrefix ? <span className='prefix'>{terminalPrefix}</span> : null}
-                <span>{text}</span>
+                <div>{text}</div>
             </div>
         );
     }

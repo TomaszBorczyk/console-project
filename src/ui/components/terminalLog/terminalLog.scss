@@ -1,5 +1,13 @@
 .terminal-log {
-  .prefix {
-    padding-right: 5px;
+  .terminal-log-item {
+    display: flex;
+
+    .prefix {
+      padding-right: 5px;
+    }
+
+    div {
+      white-space: pre-wrap;
+    }
   }
 }

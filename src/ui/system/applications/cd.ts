@@ -6,6 +6,7 @@ export class CD extends BaseApp {
     constructor(private systemNavigator: SystemNavigator) {
         super();
         this._name = 'cd';
+        this._description = 'Change directory';
     }
 
     public execute(command: TerminalCommand): string {

@@ -1,4 +1,3 @@
-
 type SimpleSystemEntry = SimpleFile | SimpleDirectory;
 
 
@@ -31,11 +30,16 @@ export class File implements BaseSystemEntry {
     constructor(
         private _name: string,
         private extension: string,
-        private contents: string,
-    ) {}
+        private _contents: string,
+    ) {
+    }
 
     public get name(): string {
         return this._name;
+    }
+
+    public get contents(): string {
+        return this._contents;
     }
 }
 
@@ -44,7 +48,8 @@ export class Directory {
         private _name: string,
         private _parent: Directory,
         private _children: Array<SystemEntry>
-    ) {}
+    ) {
+    }
 
     public get name(): string {
         return this._name;
