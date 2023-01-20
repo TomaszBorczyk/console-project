@@ -3,7 +3,7 @@ export interface TerminalCommand {
     options?: Array<string>;
 }
 
-export function interpretCommand(command: string): TerminalCommand {
+export function parseCommand(command: string): TerminalCommand {
     let commandParts: Array<string> = command.match(/\S+/g) || [];
     if (commandParts.length !== 0) {
         return {
