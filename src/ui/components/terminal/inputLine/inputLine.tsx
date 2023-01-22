@@ -1,6 +1,6 @@
 import {Component, h, JSX} from 'preact';
 import {bind} from 'decko';
-import {ARROW_DOWN_KEY, ARROW_LEFT_KEY, ARROW_RIGHT_KEY, ARROW_UP_KEY, ENTER_KEY} from '../../utils/keys';
+import {ARROW_DOWN_KEY, ARROW_LEFT_KEY, ARROW_RIGHT_KEY, ARROW_UP_KEY, ENTER_KEY} from '../../../utils/keys';
 
 const TERMINAL_LINE_PREFIX: string = '>';
 const CARET_BLINKING_CLASS: string = 'blinking';

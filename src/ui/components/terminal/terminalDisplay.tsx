@@ -1,7 +1,7 @@
 import {h, Component, JSX} from 'preact';
-import {InputLine} from '../inputLine/inputLine';
+import {InputLine} from './inputLine/inputLine';
 import {bind} from 'decko';
-import {TerminalItem, TerminalLog} from '../terminalLog/terminalLog';
+import {TerminalItem, TerminalLog} from './terminalLog/terminalLog';
 
 const DEFAULT_TERMINAL_INPUT_VALUE: string = '';
 
