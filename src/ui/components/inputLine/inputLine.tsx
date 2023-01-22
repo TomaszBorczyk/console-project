@@ -1,17 +1,12 @@
-import {h, Component, JSX} from 'preact';
+import {Component, h, JSX} from 'preact';
 import {bind} from 'decko';
+import {ARROW_DOWN_KEY, ARROW_LEFT_KEY, ARROW_RIGHT_KEY, ARROW_UP_KEY, ENTER_KEY} from '../../utils/keys';
 
 const TERMINAL_LINE_PREFIX: string = '>';
 const CARET_BLINKING_CLASS: string = 'blinking';
 const CARET_BLINK_PAUSE_TIME_MS: number = 300;
 const CARET_LETTER_SIZE_PX: number = 9.6;
 const CARET_OFFSET_LEFT_PX: number = 14;
-
-const ARROW_RIGHT_KEY: string = 'ArrowRight';
-const ARROW_LEFT_KEY: string = 'ArrowLeft';
-const ARROW_UP_KEY: string = 'ArrowUp';
-const ARROW_DOWN_KEY: string = 'ArrowDown';
-const ENTER_KEY: string = 'Enter';
 
 interface InputLineProps {
     terminalText: string;

@@ -1,0 +1,26 @@
+.popup {
+  border: 1px solid;
+  padding: 24px;
+  max-width: 30%;
+  margin: 0 auto;
+
+
+  &:focus {
+    outline: none;
+  }
+
+  .body {
+  }
+
+  .choices {
+    display: flex;
+    justify-content: space-evenly;
+
+    .choice {
+      &.selected {
+        background: red;
+        color: black;
+      }
+    }
+  }
+}
