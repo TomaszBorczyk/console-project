@@ -2,11 +2,13 @@ import {h, Component, JSX} from 'preact';
 import {Terminal} from './components/terminal/terminal';
 import {Popup, PopupChoice} from './components/popup/popup';
 import {bind} from 'decko';
+import {Loading} from './components/loading/loading';
 
 const TEXT: string = 'You are accessing confidential data. Are you ready to hack it?';
 
 enum AppMode {
     WarningPopup,
+    Loading,
     Terminal
 }
 
@@ -23,6 +25,8 @@ export class App extends Component<{}, AppState> {
         switch (this.state.mode) {
             case AppMode.WarningPopup:
                 return this.renderWarningPopup();
+            case AppMode.Loading:
+                return Loading();
             case AppMode.Terminal:
                 return this.renderTerminal();
             default:
@@ -36,8 +40,8 @@ export class App extends Component<{}, AppState> {
 
     private renderWarningPopup(): JSX.Element {
         const CHOICES: Array<PopupChoice> = [
-            {text: 'yes', onClick: this.yesChoice},
-            {text: 'no, but yes', onClick: this.yesChoice},
+            {text: '\<Yes\>', onClick: this.yesChoice},
+            {text: '\<No, but yes\>', onClick: this.yesChoice},
         ];
 
         return (
