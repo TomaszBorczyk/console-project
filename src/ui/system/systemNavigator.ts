@@ -26,11 +26,9 @@ export class SystemNavigator {
         const foundEntry: SystemEntry = this.currentDirectory.children
             .find(e => e.name === dirname);
 
-        if (foundEntry && foundEntry instanceof Directory) {
+        if (foundEntry) {
             this.enterDirectory(foundEntry);
             return;
-        } else if (foundEntry) {
-            throw Error('Not a directory');
         }
 
         throw Error('Directory not found');
@@ -39,9 +37,8 @@ export class SystemNavigator {
     public enterDirectory(dir: SystemEntry): void {
         if (dir instanceof Directory) {
             this.currentDirectory = dir;
-            return;
+        } else {
+            throw Error('Not a directory');
         }
-
-        console.error(`${dir.name} is not a directory`);
     }
 }

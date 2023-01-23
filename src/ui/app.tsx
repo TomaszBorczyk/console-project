@@ -17,7 +17,7 @@ interface AppState {
 
 export class App extends Component<{}, AppState> {
     public state: AppState = {
-        mode: AppMode.WarningPopup
+        mode: AppMode.Terminal
     };
 
     public render(props: {}, state: {}): JSX.Element {

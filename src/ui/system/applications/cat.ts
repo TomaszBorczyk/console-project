@@ -25,11 +25,11 @@ export class Cat extends BaseApp {
             const file: SystemEntry = currentContents.find(e => e.name === targetFilename);
 
             if (!file) {
-                return `${self.name}: ${targetFilename}: No such file or directory`;
+                return this.getErrorMessage(`${targetFilename}: No such file or directory`);
             }
 
             if (file instanceof Directory) {
-                return `${self.name}: ${targetFilename}: Is a directory`;
+                return this.getErrorMessage(`${targetFilename}: Is a directory`);
             }
 
             return file.contents;

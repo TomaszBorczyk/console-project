@@ -5,6 +5,8 @@ TODO:
 - [ ] tab autocomplete
 - [ ] history max length configuration (should be a stack/queue)
 - [ ] allow displaying links
+- [ ] show current path
+- [ ] different color for directories
 
 Priorities:
 - [ ] create "files" in the system and different behavior for them (text, executables)

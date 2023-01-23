@@ -11,7 +11,7 @@ export class CD extends BaseApp {
 
     public execute(command: TerminalCommand): string {
         if (command.options?.length > 1) {
-            return 'Too many arguments';
+            return this.getErrorMessage('Too many arguments');
         }
 
         if (!command.options || command.options.length === 0) {
@@ -22,7 +22,7 @@ export class CD extends BaseApp {
             try {
                 this.systemNavigator.enterDirectoryByName(command.options[0]);
             } catch (e) {
-                return e.message;
+                return this.getErrorMessage(e.message);
             }
         }
     }
