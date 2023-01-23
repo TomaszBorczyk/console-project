@@ -12,8 +12,8 @@ interface PopupState {
 }
 
 export interface PopupProps {
-    bodyText: string;
-    choices: Array<PopupChoice>;
+    body: JSX.Element | string;
+    choices?: Array<PopupChoice>;
 }
 
 export class Popup extends Component<PopupProps, PopupState> {
@@ -26,10 +26,10 @@ export class Popup extends Component<PopupProps, PopupState> {
     public render(props?: PopupProps): JSX.Element {
         return (
             <div className="popup" ref={(el: HTMLElement) => this.popup = el} tabIndex={0}>
-                <div className="body">{props.bodyText}</div>
+                <div className="body">{props.body}</div>
                 <div className="choices">
                     {
-                        props.choices.map((choice: PopupChoice, i: number) => {
+                        props.choices?.map((choice: PopupChoice, i: number) => {
                             return this.renderChoice(choice, i);
                         })
                     }
@@ -53,8 +53,7 @@ export class Popup extends Component<PopupProps, PopupState> {
         const selected: boolean = index === this.state.selected;
         const additionalClass: string = selected ? 'selected' : '';
 
-        return <span onClick={choice.onClick} className={`choice ${additionalClass}`}>{choice.text}</span>;
-
+        return <span className={`choice ${additionalClass}`}>{choice.text}</span>;
     }
 
     private focusToBody(): void {

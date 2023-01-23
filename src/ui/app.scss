@@ -1,6 +1,23 @@
-.popup-wrapper {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.app-content {
+  margin: 7% 15%;
+  border: 1px solid rgba(255, 0, 0, 0.33);
+  box-sizing: border-box;
+  height: 86%;
+  padding: 24px;
+
+  .terminal {}
+
+  .popup-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &.loading-popup {
+      .popup {
+        width: 30vw;
+        border: none;
+      }
+    }
+  }
 }

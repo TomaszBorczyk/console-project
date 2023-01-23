@@ -1,12 +1,16 @@
-import {PopupProps} from '../popup/popup';
 import {Component, h, JSX} from 'preact';
 
 
-// export class Popup extends Component<PopupProps, PopupState> {
-// }
+interface LoadingProps {
+    onLoaded: () => void;
+}
 
-export function Loading(): JSX.Element {
-    return <div className="loading">
-        <div className="color"/>
-    </div>;
+export class Loading extends Component<LoadingProps, {}> {
+    public render(props: LoadingProps): JSX.Element {
+        setTimeout(() => props.onLoaded(), 4000 + 500);
+
+        return <div className="loading">
+            <div className="color"/>
+        </div>;
+    }
 }

@@ -27,7 +27,7 @@ export class TerminalDisplay extends Component<AppProps, AppState> {
 
     public render(props: AppProps, state: AppState): JSX.Element {
         return (
-            <div>
+            <div className="terminal">
                 <TerminalLog items={state.commandHistory}/>
                 <InputLine
                     terminalText={this.state.terminalInputValue}
