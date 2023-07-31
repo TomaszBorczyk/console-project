@@ -10,7 +10,11 @@ import {CD, LS, Help} from '../../system/applications';
 import {BaseApp} from '../../system/applications/abstractApp';
 import {Cat} from '../../system/applications/cat';
 
-export class Terminal extends Component<{}, {}> {
+interface TerminalState {
+    currentPath: string;
+}
+
+export class Terminal extends Component<{}, TerminalState> {
     private readonly commandExecutor: CommandExecutor;
     private readonly systemNavigator: SystemNavigator;
 
@@ -24,18 +28,21 @@ export class Terminal extends Component<{}, {}> {
             new Cat(this.systemNavigator),
             new Help(apps)
         );
-
         this.commandExecutor = new CommandExecutor(apps);
+        this.state = {
+            currentPath: '/'
+        };
     }
 
     public render(props?: {}, state?: Readonly<{}>): JSX.Element {
-        return <TerminalDisplay handleInput={this.handleInput}/>;
+        return <TerminalDisplay path={this.state.currentPath} handleInput={this.handleInput}/>;
     }
 
     @bind()
     private handleInput(value: string): string {
         const terminalCommand: TerminalCommand = parseCommand(value);
         const appResponse: string = this.commandExecutor.execute(terminalCommand);
+        this.setState({...this.state, currentPath: this.systemNavigator.getCurrentPath()});
         return appResponse;
     }
 }

@@ -19,10 +19,36 @@ export class CD extends BaseApp {
         }
 
         if (command.options?.length === 1) {
+            const location: string = command.options[0];
+
             try {
-                this.systemNavigator.enterDirectoryByName(command.options[0]);
+                if (this.isPath(location)) {
+                    this.navigateToLocation(this.parseLocation(location));
+                } else {
+                    this.systemNavigator.enterDirectoryByName(location);
+                }
             } catch (e) {
                 return this.getErrorMessage(e.message);
+            }
+        }
+    }
+
+    private isPath(location: string): boolean {
+        return location.includes('/');
+    }
+
+    private parseLocation(location: string): Array<string> {
+        return location.split('/');
+    }
+
+    private navigateToLocation(path: Array<string>): void {
+        while (path.length > 0) {
+            const target: string = path.shift();
+
+            if (target === '..') {
+                this.systemNavigator.goToParent();
+            } else {
+                this.systemNavigator.enterDirectoryByName(target);
             }
         }
     }

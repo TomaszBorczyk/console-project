@@ -9,8 +9,18 @@ const fileSystem: SimpleDirectory = {
             contents: 'siema'
         },
         {
-            name: 'private',
-            children: []
+            name: 'private1',
+            children: [
+                {
+                    name: 'private2',
+                    children: [
+                        {
+                            name: 'private3',
+                            children: []
+                        }
+                    ]
+                }
+            ]
         }
     ]
 };

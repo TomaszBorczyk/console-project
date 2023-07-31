@@ -6,6 +6,7 @@ import {TerminalItem, TerminalLog} from './terminalLog/terminalLog';
 const DEFAULT_TERMINAL_INPUT_VALUE: string = '';
 
 export interface AppProps {
+    path: string;
     handleInput: (value: string) => string;
 }
 
@@ -30,6 +31,7 @@ export class TerminalDisplay extends Component<AppProps, AppState> {
             <div className="terminal">
                 <TerminalLog items={state.commandHistory}/>
                 <InputLine
+                    path={props.path}
                     terminalText={this.state.terminalInputValue}
                     caretPosition={this.state.caretPosition}
                     onEnter={this.handleEnter}
@@ -43,7 +45,7 @@ export class TerminalDisplay extends Component<AppProps, AppState> {
         const response: string = this.props.handleInput(consoleInputValue);
 
         const userInputItem: TerminalItem = {
-            terminalPrefix: '>',
+            terminalPrefix: `${this.props.path} >`,
             text: consoleInputValue
         };
 

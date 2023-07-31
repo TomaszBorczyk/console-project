@@ -11,6 +11,7 @@ const CARET_OFFSET_LEFT_PX: number = 14;
 interface InputLineProps {
     terminalText: string;
     caretPosition: number;
+    path: string;
     onInputChange: (terminalText: string, caretPosition: number) => void;
     onEnter: (value: string) => void;
     // onArrowUp?: () => void;
@@ -40,17 +41,17 @@ export class InputLine extends Component<InputLineProps, InputLineState> {
 
     public render(props: InputLineProps, state: InputLineState): JSX.Element {
         return (
-            <div className='input-line'>
-                <span>{TERMINAL_LINE_PREFIX}</span>
+            <div className="input-line">
+                <span>{this.renderPath()}{TERMINAL_LINE_PREFIX}</span>
                 <span
-                    className='terminal-text-inputed'
+                    className="terminal-text-inputed"
                     ref={(element: HTMLInputElement) => this.terminalTextInputed = element}>{props.terminalText}</span>
                 <span
                     className={`command-prompt ${this.state.caretBlinking ? CARET_BLINKING_CLASS : ''}`}
                     ref={(element: HTMLElement) => this.caret = element}/>
                 <input
-                    className='terminal-input'
-                    type='text'
+                    className="terminal-input"
+                    type="text"
                     value={props.terminalText}
                     ref={(element: HTMLInputElement) => this.terminalInput = element}/>
             </div>
@@ -131,8 +132,16 @@ export class InputLine extends Component<InputLineProps, InputLineState> {
     }
 
     private updateVisualCaretPosition(): void {
-        let caretLeftPx: number = CARET_OFFSET_LEFT_PX + this.props.caretPosition * CARET_LETTER_SIZE_PX;
+        let caretLeftPx: number = CARET_OFFSET_LEFT_PX + (this.props.caretPosition + this.getPathCaretOffset()) * CARET_LETTER_SIZE_PX;
         this.caret.style.left = caretLeftPx.toString();
+    }
+
+    private getPathCaretOffset(): number {
+        return this.renderPath().length;
+    }
+
+    private renderPath(): string {
+        return `${this.props.path} `;
     }
 
     private pauseCaretBlinking(): void {
@@ -140,7 +149,7 @@ export class InputLine extends Component<InputLineProps, InputLineState> {
         this.setCaretBlink(false);
         this.caretTimer = setTimeout(() => {
             this.setCaretBlink(true);
-        },  CARET_BLINK_PAUSE_TIME_MS);
+        }, CARET_BLINK_PAUSE_TIME_MS);
     }
 
     private setCaretBlink(value: boolean): void {

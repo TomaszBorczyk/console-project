@@ -21,8 +21,27 @@ export class SystemNavigator {
         return this.currentDirectory;
     }
 
+    public getCurrentPath(): string {
+        const pathElements: Array<string> = [];
+
+        let currentDirectory: Directory = this.currentDirectory;
+
+        while (currentDirectory.parent !== currentDirectory) {
+            pathElements.unshift(currentDirectory.name);
+            currentDirectory = currentDirectory.parent;
+        }
+
+        const combinedPath: string = pathElements.join('/');
+
+        return `/${combinedPath}`;
+    }
+
     // fixme: this should not be part of this class
     public enterDirectoryByName(dirname: string): void {
+        if (dirname === '..') {
+            return this.goToParent();
+        }
+
         const foundEntry: SystemEntry = this.currentDirectory.children
             .find(e => e.name === dirname);
 
